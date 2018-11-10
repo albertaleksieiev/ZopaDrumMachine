@@ -19,8 +19,10 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         src/main/cpp/native-lib.cpp
-        src/main/cpp/AudioEngine.cpp
-        src/main/cpp/google/SoundRecording.cpp)
+        src/main/cpp/DrumMachine.cpp
+        src/main/cpp/google/SoundRecording.cpp
+        src/main/cpp/effects/SimpleDelay.cpp
+        src/main/cpp/google/Mixer.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by

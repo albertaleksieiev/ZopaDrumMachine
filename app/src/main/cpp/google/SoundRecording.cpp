@@ -17,39 +17,49 @@
 #include "SoundRecording.h"
 #include "../../../../../../android/oboe/src/common/OboeDebug.h"
 
-void SoundRecording::renderAudio(int16_t *targetData, int32_t numFrames){
-
-    if (mIsPlaying){
-
+void SoundRecording::renderAudio(int16_t *targetData, int32_t numFrames) {
+    if (mIsPlaying) {
+        // LOGD("Current frame = %d, total max number of frames %d", mReadFrameIndex, mTotalFrames);
         // Check whether we're about to reach the end of the recording
-        if (!mIsLooping && mReadFrameIndex + numFrames >= mTotalFrames){
+        if (!mIsLooping && mReadFrameIndex + numFrames >= mTotalFrames) {
             numFrames = mTotalFrames - mReadFrameIndex;
             mIsPlaying = false;
         }
 
+        auto pivotFactor = calculatePivotFactor();
+
+//        if(mReadFrameIndex % 4 == 0) {
+//            LOGD("factor = %d, item = %ld of %ld", factor, mReadFrameIndex, mTotalFrames);
+//        }
+
         for (int i = 0; i < numFrames; ++i) {
             for (int j = 0; j < mChannelCount; ++j) {
-                targetData[(i*mChannelCount)+j] = mData[(mReadFrameIndex*mChannelCount)+j];
+                targetData[(i * mChannelCount) + j] = mData[(mReadFrameIndex * mChannelCount) + j];
             }
 
             // Increment and handle wraparound
             if (++mReadFrameIndex >= mTotalFrames) mReadFrameIndex = 0;
-        }
 
+            for (int j = 0; j < mChannelCount; ++j) {
+                targetData[(i * mChannelCount) + j] *= pivotFactor;
+            }
+        }
     } else {
         // fill with zeros to output silence
         for (int i = 0; i < numFrames * mChannelCount; ++i) {
             targetData[i] = 0;
         }
     }
+
+    //simpleDelay.renderAudio(targetData, numFrames);
 }
 
-SoundRecording * SoundRecording::loadFromAssets(AAssetManager *assetManager, const char *filename) {
+SoundRecording *SoundRecording::loadFromAssets(AAssetManager *assetManager, const char *filename) {
 
     // Load the backing track
-    AAsset* asset = AAssetManager_open(assetManager, filename, AASSET_MODE_BUFFER);
+    AAsset *asset = AAssetManager_open(assetManager, filename, AASSET_MODE_BUFFER);
 
-    if (asset == nullptr){
+    if (asset == nullptr) {
         LOGE("Failed to open track, filename %s", filename);
         return nullptr;
     }
@@ -58,9 +68,9 @@ SoundRecording * SoundRecording::loadFromAssets(AAssetManager *assetManager, con
     off_t trackLength = AAsset_getLength(asset);
 
     // Load it into memory
-    const int16_t *audioBuffer = static_cast<const int16_t*>(AAsset_getBuffer(asset));
+    auto *audioBuffer = static_cast<const int16_t *>(AAsset_getBuffer(asset));
 
-    if (audioBuffer == nullptr){
+    if (audioBuffer == nullptr) {
         LOGE("Could not get buffer for track");
         return nullptr;
     }
@@ -68,7 +78,17 @@ SoundRecording * SoundRecording::loadFromAssets(AAssetManager *assetManager, con
     // There are 4 bytes per frame because
     // each sample is 2 bytes and
     // it's a stereo recording which has 2 samples per frame.
-    int32_t numFrames = static_cast<int32_t>(trackLength / 4);
+    auto numFrames = static_cast<int32_t>(trackLength / 4);
     LOGD("Opened backing track, bytes: %ld frames: %d", trackLength, numFrames);
     return new SoundRecording(audioBuffer, numFrames);
+}
+
+float SoundRecording::calculatePivotFactor() {
+    auto factor = (float) mReadFrameIndex / mTotalFrames; //0...1
+    if (factor < pivotPerc) {
+        factor = factor / pivotPerc;
+    } else {
+        factor = (1 - factor) / (1 - pivotPerc);
+    }
+    return std::min(factor, 0.95f);
 }

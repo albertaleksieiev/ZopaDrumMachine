@@ -17,6 +17,7 @@
 #ifndef RHYTHMGAME_SOUNDRECORDING_H
 #define RHYTHMGAME_SOUNDRECORDING_H
 
+#include "../effects/SimpleDelay.h"
 #include <cstdint>
 #include <array>
 
@@ -28,28 +29,37 @@
 
 #include "RenderableAudio.h"
 
-class SoundRecording : public RenderableAudio{
+class SoundRecording : public RenderableAudio {
 
 public:
     SoundRecording(const int16_t *sourceData, int32_t numFrames)
-            : mData(sourceData)
-            , mTotalFrames(numFrames)
-    {};
+            : mData(sourceData), mTotalFrames(numFrames) {};
+
     void renderAudio(int16_t *targetData, int32_t numFrames);
+
     void resetPlayHead() { mReadFrameIndex = 0; };
-    void setPlaying(bool isPlaying) { mIsPlaying = isPlaying; resetPlayHead(); };
+
+    void setPlaying(bool isPlaying) {
+        mIsPlaying = isPlaying;
+        resetPlayHead();
+    };
+
     void setLooping(bool isLooping) { mIsLooping = isLooping; };
 
-    static SoundRecording * loadFromAssets(AAssetManager *assetManager, const char * filename);
+    static SoundRecording *loadFromAssets(AAssetManager *assetManager, const char *filename);
 
 private:
-    int32_t mChannelCount = 2; // TODO: move this into a konstant and maybe add as parameter to ctor
-    int32_t mReadFrameIndex = 0;
-    const int16_t* mData = nullptr;
-    int32_t mTotalFrames = 0;
-    std::atomic<bool> mIsPlaying { false };
-    std::atomic<bool> mIsLooping { false };
+    float calculatePivotFactor();
 
+    int32_t mChannelCount = 2; // TODO: move this into a constant and maybe add as parameter to ctor
+    int32_t mReadFrameIndex = 0;
+    const int16_t *mData = nullptr;
+    int32_t mTotalFrames = 0;
+    std::atomic<bool> mIsPlaying{false};
+    std::atomic<bool> mIsLooping{false};
+
+    float pivotPerc = 0.03; // 0..<..3%..>..100%
+    SimpleDelay simpleDelay = SimpleDelay(0.5f, 0.7f);
 };
 
 #endif //RHYTHMGAME_SOUNDRECORDING_H

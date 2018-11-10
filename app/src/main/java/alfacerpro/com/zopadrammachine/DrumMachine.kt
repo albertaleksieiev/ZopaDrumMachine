@@ -13,8 +13,14 @@ class DrumMachine(assetManager: AssetManager) {
         this.playSound(sound.id)
     }
 
-
+    public external fun getPatternForSound(id: Int): IntArray?
     public external fun playSound(id: Int)
+    public external fun addPattern(id: Int, patternIndex: Int)
+    public external fun removePattern(id: Int, patternIndex: Int)
+    public external fun setPatternForSound(id: Int, pattern: IntArray)
+    public external fun currentStep(): Int
+    public external fun stop()
+
     private external fun onCreate(assetManager: AssetManager)
 
     init {
