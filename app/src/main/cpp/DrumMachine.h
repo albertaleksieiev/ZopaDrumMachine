@@ -10,7 +10,7 @@
 #include "google/SoundRecording.h"
 #include "google/Mixer.h"
 #include "effects/SimpleDelay.h"
-
+#include "SimpleOscillator.h"
 #include "const.h"
 
 
@@ -54,6 +54,7 @@ private:
     std::vector<bool> clapEvents = std::vector<bool>(kSteps, false);
     std::vector<bool> snareEvents = std::vector<bool>(kSteps, false);
     std::vector<bool> kickEvents = std::vector<bool>(kSteps, false);
+    oscillator::SimpleOscillator oscillator;
 
     std::atomic<int> mCurrentFrame{0};
 };

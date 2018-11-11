@@ -22,6 +22,7 @@ add_library( # Sets the name of the library.
         src/main/cpp/DrumMachine.cpp
         src/main/cpp/google/SoundRecording.cpp
         src/main/cpp/effects/SimpleDelay.cpp
+        src/main/cpp/SimpleOscillator.cpp
         src/main/cpp/google/Mixer.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a

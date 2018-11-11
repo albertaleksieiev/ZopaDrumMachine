@@ -51,7 +51,6 @@ public:
 private:
     float calculatePivotFactor();
 
-    int32_t mChannelCount = 2; // TODO: move this into a constant and maybe add as parameter to ctor
     int32_t mReadFrameIndex = 0;
     const int16_t *mData = nullptr;
     int32_t mTotalFrames = 0;

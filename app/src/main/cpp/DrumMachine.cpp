@@ -47,6 +47,12 @@ void DrumMachine::start() {
 
 DataCallbackResult DrumMachine::onAudioReady(AudioStream *oboeStream, void *audioData, int32_t numFrames) {
     auto begin = static_cast<int16_t *>(audioData);
+
+    /* if you want try oscillator, uncomment this lines
+    oscillator.renderAudio(begin, numFrames);
+    return DataCallbackResult::Continue;
+    */
+
     for (int i = 0; i < numFrames; ++i) {
 
         if (mCurrentFrame % kBeatMultiplier == 0) {
@@ -91,7 +97,6 @@ void DrumMachine::removePattern(int idSound, int patternIndex) {
     if (patternBank != nullptr) {
         (*patternBank)[patternIndex] = false;
     }
-    std::vector<int> t(16, 1);
 }
 
 

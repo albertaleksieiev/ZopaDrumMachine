@@ -7,4 +7,4 @@ This a simple [sequencer](https://en.wikipedia.org/wiki/Music_sequencer) for And
 - Kick/Snare/Clap as a wav files, so you can change it to your sounds.
 - Auto Save/Load state
 
-Also, you can find a simple implementation of Delay effect(`SimpleDelay.h`) in a repo.
+Also, you can find a simple implementation of Delay effect(`SimpleDelay.h`), Oscillator(`SimpleOscillator.h`) in a repo.

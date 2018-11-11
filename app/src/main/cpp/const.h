@@ -9,11 +9,16 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <cmath>
 
 constexpr int kSampleRateHz = 48000; //
 constexpr int kBufferSizeInBursts = 2; // Use 2 bursts as the buffer size (double buffer)
 constexpr int kSteps = 16; // Must be multiplied of 2
 constexpr int BPM = 155; // TODO fix bpm
+constexpr int16_t kMaxSoundValue = 32767;
+
+constexpr int32_t mChannelCount = 2; // TODO: move this into a constant and maybe add as parameter to ctor
+constexpr auto M_TWO_PI = M_PI * 2;
 
 template<typename T, size_t N>
 std::vector<T> makeVector(const T (&data)[N]) {
@@ -30,6 +35,7 @@ std::string toString(const std::vector<T> &vec) {
 
     return res;
 }
+
 #endif //ZOPADRAMMACHINE_CONST_H
 
 
