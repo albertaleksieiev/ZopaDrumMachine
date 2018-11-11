@@ -63,7 +63,7 @@ DataCallbackResult DrumMachine::onAudioReady(AudioStream *oboeStream, void *audi
             }
             auto t = numFrames - i;
             mMixer.renderAudio(begin + (kChannelCount * i), t);
-            mCurrentFrame =  (mCurrentFrame + t) % kMaxWindowHZ;
+            mCurrentFrame = (mCurrentFrame + t) % kMaxWindowHZ;
             break;
         } else {
 
@@ -112,20 +112,27 @@ std::vector<bool> *DrumMachine::getPatternBank(int idSound) {
 
 std::vector<int> DrumMachine::getPatternForSound(int idSound) {
     auto bank = getPatternBank(idSound);
-    std::vector<int> res;
+    std::vector<int> pattern;
 
     for (int i = 0; i < bank->size(); ++i) {
         if ((*bank)[i]) {
-            res.push_back(i);
+            pattern.push_back(i);
         }
     }
 
-    return res;
+    LOGD("Get pattern for idSound = %d, pattern = %s", idSound, toString(pattern).c_str());
+
+    return pattern;
 }
 
 void DrumMachine::setPatternForSound(int idSound, std::vector<int> pattern) {
+    LOGD("Set pattern for idSound = %d, pattern = %s", idSound, toString(pattern).c_str());
     auto bank = getPatternBank(idSound);
-    for(auto patternIndex: pattern) {
+
+    // clear
+    std::fill(bank->begin(), bank->end(), false);
+
+    for (auto patternIndex: pattern) {
         (*bank)[patternIndex] = true;
     }
 }

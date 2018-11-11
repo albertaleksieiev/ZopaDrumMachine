@@ -51,15 +51,9 @@ private:
 
     AudioStream *mAudioStream = nullptr;
 
-    //                                                   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
-    std::vector<bool> clapEvents = makeVector((bool[])  {0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1});
-    std::vector<bool> snareEvents = makeVector((bool[]) {0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0});
-    std::vector<bool> kickEvents = makeVector((bool[])  {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0});
-
-    //std::vector<bool> clapEvents = std::vector<bool>(kSteps, false);
-    //std::vector<bool> snareEvents = std::vector<bool>(kSteps, false);
-    //std::vector<bool> kickEvents = std::vector<bool>(kSteps, false);
-
+    std::vector<bool> clapEvents = std::vector<bool>(kSteps, false);
+    std::vector<bool> snareEvents = std::vector<bool>(kSteps, false);
+    std::vector<bool> kickEvents = std::vector<bool>(kSteps, false);
 
     std::atomic<int> mCurrentFrame{0};
 };

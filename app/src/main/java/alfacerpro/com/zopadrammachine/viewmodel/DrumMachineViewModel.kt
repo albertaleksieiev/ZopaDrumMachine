@@ -51,6 +51,7 @@ class DrumMachineViewModel : ViewModel() {
         }
         return newPattern
     }
+
     private fun saveState() {
         DrumMachinePref.patterns = getCurrentMachineState()
     }
