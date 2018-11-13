@@ -1,6 +1,6 @@
 package alfacerpro.com.zopadrammachine.ui
 
-import alfacerpro.com.zopadrammachine.DrumMachine
+import alfacerpro.com.zopadrammachine.core.DrumMachine
 import alfacerpro.com.zopadrammachine.R
 import alfacerpro.com.zopadrammachine.viewmodel.DrumMachineViewModel
 import android.arch.lifecycle.Observer

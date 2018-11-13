@@ -1,8 +1,9 @@
-package alfacerpro.com.zopadrammachine
+package alfacerpro.com.zopadrammachine.core
 
 import android.content.res.AssetManager
 
 class DrumMachine(assetManager: AssetManager) {
+    val nativePointer: Long // DO not rename this field
     enum class Sound(val id: Int) {
         CLAP(0),
         SNARE(1),
@@ -21,9 +22,9 @@ class DrumMachine(assetManager: AssetManager) {
     public external fun currentStep(): Int
     public external fun stop()
 
-    private external fun onCreate(assetManager: AssetManager)
+    private external fun init(assetManager: AssetManager) : Long
 
     init {
-        onCreate(assetManager)
+        nativePointer = init(assetManager)
     }
 }

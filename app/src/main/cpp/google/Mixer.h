@@ -20,10 +20,10 @@
 
 #include "SoundRecording.h"
 #include "RenderableAudio.h"
+#include "../const.h"
 
 constexpr int32_t kBufferSize = 192*10; // Temporary buffer is used for mixing
 constexpr uint8_t kMaxTracks = 10;
-constexpr int32_t kChannelCount = 2;
 
 class Mixer : public RenderableAudio {
 

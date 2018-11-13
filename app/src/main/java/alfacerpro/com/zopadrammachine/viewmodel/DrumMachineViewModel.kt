@@ -1,6 +1,8 @@
 package alfacerpro.com.zopadrammachine.viewmodel
 
-import alfacerpro.com.zopadrammachine.DrumMachine
+import alfacerpro.com.zopadrammachine.core.AudioEngine
+import alfacerpro.com.zopadrammachine.core.DrumMachine
+import alfacerpro.com.zopadrammachine.core.SimpleOscillator
 import alfacerpro.com.zopadrammachine.utils.DrumMachinePref
 import alfacerpro.com.zopadrammachine.utils.DrumMachineSoundPattern
 import android.arch.lifecycle.MutableLiveData
@@ -12,12 +14,18 @@ class DrumMachineViewModel : ViewModel() {
     val currentStep = MutableLiveData<Int>()
     val patternState = MutableLiveData<List<DrumMachineSoundPattern>>()
     var machine: DrumMachine? = null
+    var audioEngine = AudioEngine()
     var stepCount = 16
 
     private var backgroundThread: Thread? = null
 
     fun onStart(context: Context) {
         machine = DrumMachine(context.assets)
+
+        audioEngine.clearInstruments()
+        audioEngine.addInstrument(machine!!.nativePointer)
+        //audioEngine.addInstrument(SimpleOscillator().nativePointer)
+        audioEngine.start()
         loadState()
         startBackgroundThread()
     }
@@ -25,7 +33,7 @@ class DrumMachineViewModel : ViewModel() {
     fun onStop() {
         saveState()
         backgroundThread?.interrupt()
-        machine?.stop()
+        audioEngine.stop()
     }
 
     private fun startBackgroundThread() {

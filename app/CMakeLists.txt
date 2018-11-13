@@ -19,10 +19,13 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         src/main/cpp/native-lib.cpp
-        src/main/cpp/DrumMachine.cpp
+        src/main/cpp/bridge/oscillator.cpp
+        src/main/cpp/bridge/drum-machine.cpp
+        src/main/cpp/AudioEngine.cpp
+        src/main/cpp/instruments/SimpleOscillator.cpp
+        src/main/cpp/instruments/DrumMachine.cpp
         src/main/cpp/google/SoundRecording.cpp
         src/main/cpp/effects/SimpleDelay.cpp
-        src/main/cpp/SimpleOscillator.cpp
         src/main/cpp/google/Mixer.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a

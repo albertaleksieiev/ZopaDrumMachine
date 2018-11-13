@@ -1,6 +1,6 @@
 package alfacerpro.com.zopadrammachine.utils
 
-import alfacerpro.com.zopadrammachine.DrumMachine
+import alfacerpro.com.zopadrammachine.core.DrumMachine
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.gsonpref.gsonPref
 

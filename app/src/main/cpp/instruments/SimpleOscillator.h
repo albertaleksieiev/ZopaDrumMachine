@@ -5,8 +5,8 @@
 #ifndef ZOPADRAMMACHINE_SIMPLEOSCILLATOR_H
 #define ZOPADRAMMACHINE_SIMPLEOSCILLATOR_H
 
-#include "google/RenderableAudio.h"
-#include "const.h"
+#include "../google/RenderableAudio.h"
+#include "../const.h"
 #include <functional>
 
 namespace oscillator {

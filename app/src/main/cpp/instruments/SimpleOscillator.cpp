@@ -33,8 +33,10 @@ namespace oscillator {
         for (int i = 0; i < numFrames; i++) {
             double value = waveFunc(phase) * kMaxSoundValue * volume;
 
-            for (int j = 0; j < mChannelCount; ++j) {
-                targetData[(i * mChannelCount) + j] = static_cast<int16_t>(value);
+            for (int j = 0; j < kChannelCount; ++j) {
+                //if (targetData[(i * kChannelCount) + j] != 0) {
+                    targetData[(i * kChannelCount) + j] = static_cast<int16_t>(value);
+                //}
             }
 
             // Increment phase

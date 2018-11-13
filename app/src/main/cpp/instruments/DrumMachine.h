@@ -7,25 +7,20 @@
 
 #include <oboe/Oboe.h>
 #include <vector>
-#include "google/SoundRecording.h"
-#include "google/Mixer.h"
-#include "effects/SimpleDelay.h"
-#include "SimpleOscillator.h"
-#include "const.h"
-
+#include "../google/SoundRecording.h"
+#include "../google/Mixer.h"
+#include "../effects/SimpleDelay.h"
+#include "../const.h"
+#include "../../../../../../../android/oboe/src/common/OboeDebug.h"
 
 constexpr int kBeatMultiplier = static_cast<const int>((float) kSampleRateHz / (BPM / 60.0));
 constexpr int kMaxWindowHZ = kBeatMultiplier * 16;
 
 using namespace oboe;
 
-class DrumMachine : public AudioStreamCallback {
+class DrumMachine : public RenderableAudio {
 public:
     DrumMachine(AAssetManager *mAssetManager);
-
-    void start();
-
-    void stop();
 
     void addPattern(int idSound, int patternIndex);
 
@@ -37,7 +32,7 @@ public:
 
     int currentStep();
 
-    DataCallbackResult onAudioReady(AudioStream *oboeStream, void *audioData, int32_t numFrames) override;
+    void renderAudio(int16_t *targetData, int32_t numFrames) override;
 
 private:
     std::vector<bool> *getPatternBank(int idSound);
@@ -49,12 +44,9 @@ private:
     AAssetManager *mAssetManager = nullptr;
     Mixer mMixer;
 
-    AudioStream *mAudioStream = nullptr;
-
     std::vector<bool> clapEvents = std::vector<bool>(kSteps, false);
     std::vector<bool> snareEvents = std::vector<bool>(kSteps, false);
     std::vector<bool> kickEvents = std::vector<bool>(kSteps, false);
-    oscillator::SimpleOscillator oscillator;
 
     std::atomic<int> mCurrentFrame{0};
 };

@@ -33,20 +33,20 @@ void SoundRecording::renderAudio(int16_t *targetData, int32_t numFrames) {
 //        }
 
         for (int i = 0; i < numFrames; ++i) {
-            for (int j = 0; j < mChannelCount; ++j) {
-                targetData[(i * mChannelCount) + j] = mData[(mReadFrameIndex * mChannelCount) + j];
+            for (int j = 0; j < kChannelCount; ++j) {
+                targetData[(i * kChannelCount) + j] = mData[(mReadFrameIndex * kChannelCount) + j];
             }
 
             // Increment and handle wraparound
             if (++mReadFrameIndex >= mTotalFrames) mReadFrameIndex = 0;
 
-            for (int j = 0; j < mChannelCount; ++j) {
-                targetData[(i * mChannelCount) + j] *= pivotFactor;
+            for (int j = 0; j < kChannelCount; ++j) {
+                targetData[(i * kChannelCount) + j] *= pivotFactor;
             }
         }
     } else {
         // fill with zeros to output silence
-        for (int i = 0; i < numFrames * mChannelCount; ++i) {
+        for (int i = 0; i < numFrames * kChannelCount; ++i) {
             targetData[i] = 0;
         }
     }
