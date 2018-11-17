@@ -46,8 +46,8 @@ class PianoKeyboardView : View {
         blackKeyPaint.color = Color.BLACK
         blackKeyPaint.style = Paint.Style.FILL
 
-        whiteKeyWidth = 40.px.toFloat()
-        blackKeyWidth = 30.px.toFloat()
+        whiteKeyWidth = 50.px.toFloat()
+        blackKeyWidth = 40.px.toFloat()
     }
 
 
@@ -59,7 +59,7 @@ class PianoKeyboardView : View {
         }
 
         var x = 0
-        for (octave in 4..6) {
+        for (octave in 4..5) {
             x = drawOctave(canvas, x, height, octave)
         }
     }
