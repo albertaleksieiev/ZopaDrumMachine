@@ -2,24 +2,22 @@ package alfacerpro.com.zopadrammachine.viewmodel
 
 import alfacerpro.com.zopadrammachine.core.AudioEngine
 import alfacerpro.com.zopadrammachine.core.DrumMachine
-import alfacerpro.com.zopadrammachine.core.SimpleOscillator
 import alfacerpro.com.zopadrammachine.utils.DrumMachinePref
 import alfacerpro.com.zopadrammachine.utils.DrumMachineSoundPattern
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import android.content.Context
 import kotlin.concurrent.thread
 
-class DrumMachineViewModel : ViewModel() {
+class DrumMachineAudioEngineViewModel : AudioEngineViewModelBase() {
+
     val currentStep = MutableLiveData<Int>()
     val patternState = MutableLiveData<List<DrumMachineSoundPattern>>()
     var machine: DrumMachine? = null
-    var audioEngine = AudioEngine()
     var stepCount = 16
 
     private var backgroundThread: Thread? = null
 
-    fun onStart(context: Context) {
+    override  fun onCreate(context: Context) {
         machine = DrumMachine(context.assets)
 
         audioEngine.clearInstruments()
@@ -30,7 +28,9 @@ class DrumMachineViewModel : ViewModel() {
         startBackgroundThread()
     }
 
-    fun onStop() {
+    override fun onStop() {
+        super.onStop()
+
         saveState()
         backgroundThread?.interrupt()
         audioEngine.stop()
@@ -47,7 +47,6 @@ class DrumMachineViewModel : ViewModel() {
                 } catch (e: InterruptedException) { }
             }
         }
-       // backgroundThread?.start()
     }
 
     private fun getCurrentMachineState(): ArrayList<DrumMachineSoundPattern> {

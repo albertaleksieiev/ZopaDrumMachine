@@ -2,7 +2,8 @@ package alfacerpro.com.zopadrammachine.ui
 
 import alfacerpro.com.zopadrammachine.core.DrumMachine
 import alfacerpro.com.zopadrammachine.R
-import alfacerpro.com.zopadrammachine.viewmodel.DrumMachineViewModel
+import alfacerpro.com.zopadrammachine.Utils
+import alfacerpro.com.zopadrammachine.viewmodel.DrumMachineAudioEngineViewModel
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.res.Resources
@@ -14,21 +15,19 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import kotlinx.android.synthetic.main.activity_main.*
 
-val Int.dp: Int
-    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
 val Int.px: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: DrumMachineViewModel by lazy {
-        ViewModelProviders.of(this).get(DrumMachineViewModel::class.java)
+    private val viewModel: DrumMachineAudioEngineViewModel by lazy {
+        ViewModelProviders.of(this).get(DrumMachineAudioEngineViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        System.loadLibrary("native-lib")
+        Utils.loadLibrary()
 
         initTickersView()
 
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         initPatternView(DrumMachine.Sound.SNARE)
         initPatternView(DrumMachine.Sound.CLAP)
 
-        viewModel.onStart(this)
+        viewModel.onCreate(this)
         viewModel.currentStep.observe(this, Observer { step ->
             step?.let {
                 val childs = tickersView.childCount

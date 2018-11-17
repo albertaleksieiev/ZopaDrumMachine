@@ -11,6 +11,7 @@
 #include <chrono>
 #include <thread>
 #include <cmath>
+#include <jni.h>
 
 constexpr int kSampleRateHz = 48000; //
 constexpr int kBufferSizeInBursts = 2; // Use 2 bursts as the buffer size (double buffer)
@@ -37,6 +38,15 @@ std::string toString(const std::vector<T> &vec) {
     return res;
 }
 
+template<typename T>
+T* getNativeObject(JNIEnv *env,
+                   jobject jobj) {
+    jclass DrumMachineClass = env->GetObjectClass(jobj);
+
+    jfieldID fieldId = env->GetFieldID(DrumMachineClass, "nativePointer", "J");
+
+    return (T*) env->GetLongField(jobj, fieldId);
+}
 
 #endif //ZOPADRAMMACHINE_CONST_H
 

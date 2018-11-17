@@ -9,19 +9,10 @@
 
 extern "C" {
 
-DrumMachine *getDrumMachine(JNIEnv *env,
-                            jobject jobj) {
-    jclass DrumMachineClass = env->GetObjectClass(jobj);
-
-    jfieldID fieldId = env->GetFieldID(DrumMachineClass, "nativePointer", "J");
-
-    return (DrumMachine *) env->GetLongField(jobj, fieldId);
-}
-
 JNIEXPORT jint JNICALL
 Java_alfacerpro_com_zopadrammachine_core_DrumMachine_currentStep(JNIEnv *env,
-                                                                 jobject thiz) {
-    auto drumMachine = getDrumMachine(env, thiz);
+                                                                 jobject instance) {
+    auto drumMachine = getNativeObject<DrumMachine>(env, instance);
 
     if (drumMachine != nullptr) {
         return drumMachine->currentStep();
@@ -37,7 +28,7 @@ Java_alfacerpro_com_zopadrammachine_core_DrumMachine_addPattern(
         jobject instance,
         jint soundId,
         jint patternIndex) {
-    auto drumMachine = getDrumMachine(env, instance);
+    auto drumMachine = getNativeObject<DrumMachine>(env, instance);
 
     if (drumMachine != nullptr) {
         drumMachine->addPattern(soundId, patternIndex);
@@ -50,7 +41,7 @@ Java_alfacerpro_com_zopadrammachine_core_DrumMachine_removePattern(
         jobject instance,
         jint soundId,
         jint patternIndex) {
-    auto drumMachine = getDrumMachine(env, instance);
+    auto drumMachine = getNativeObject<DrumMachine>(env, instance);
 
     if (drumMachine != nullptr) {
         drumMachine->removePattern(soundId, patternIndex);
@@ -63,7 +54,7 @@ Java_alfacerpro_com_zopadrammachine_core_DrumMachine_setPatternForSound(
         jobject instance,
         jint soundId,
         jintArray patternArray) {
-    auto drumMachine = getDrumMachine(env, instance);
+    auto drumMachine = getNativeObject<DrumMachine>(env, instance);
 
     if (drumMachine == nullptr) {
         return;
@@ -87,7 +78,7 @@ Java_alfacerpro_com_zopadrammachine_core_DrumMachine_getPatternForSound(
         JNIEnv *env,
         jobject instance,
         jint soundId) {
-    auto drumMachine = getDrumMachine(env, instance);;
+    auto drumMachine = getNativeObject<DrumMachine>(env, instance);
 
     if (drumMachine == nullptr) {
         return nullptr;

@@ -21,9 +21,11 @@ add_library( # Sets the name of the library.
         src/main/cpp/native-lib.cpp
         src/main/cpp/bridge/oscillator.cpp
         src/main/cpp/bridge/drum-machine.cpp
+        src/main/cpp/bridge/piano.cpp
         src/main/cpp/AudioEngine.cpp
         src/main/cpp/instruments/SimpleOscillator.cpp
         src/main/cpp/instruments/DrumMachine.cpp
+        src/main/cpp/instruments/Piano.cpp
         src/main/cpp/google/SoundRecording.cpp
         src/main/cpp/effects/SimpleDelay.cpp
         src/main/cpp/google/Mixer.cpp)

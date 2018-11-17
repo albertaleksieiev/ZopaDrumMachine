@@ -37,6 +37,12 @@ void AudioEngine::stop() {
 
 DataCallbackResult AudioEngine::onAudioReady(AudioStream *oboeStream, void *audioData, int32_t numFrames) {
     auto begin = static_cast<int16_t *>(audioData);
+    if (skipAllFrames) {
+        fillEmptyData(begin, numFrames);
+        return DataCallbackResult::Continue;
+    }
+
+
     if (this->renderableAudios.empty()) {
         fillEmptyData(begin, numFrames);
     } else {
@@ -52,4 +58,21 @@ void AudioEngine::fillEmptyData(int16_t *audioData, int32_t numFrames) {
     for (int i = 0; i < numFrames * kChannelCount; i++) {
         audioData[i] = 0;
     }
+}
+
+void AudioEngine::pause() {
+    audioStream->requestPause();
+}
+
+int AudioEngine::getState() {
+    return static_cast<aaudio_stream_state_t>(audioStream->getState());
+}
+
+void AudioEngine::resume() {
+    // TODO add checks
+    audioStream->requestStart();
+}
+
+void AudioEngine::setIsPlaying(bool playing) {
+    skipAllFrames = !playing;
 }
