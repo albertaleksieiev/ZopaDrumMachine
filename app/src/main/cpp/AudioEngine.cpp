@@ -39,6 +39,25 @@ DataCallbackResult AudioEngine::onAudioReady(AudioStream *oboeStream, void *audi
     auto begin = static_cast<int16_t *>(audioData);
     if (skipAllFrames) {
         fillEmptyData(begin, numFrames);
+
+        if (releaseDataPointerNext != -1 && releaseDataPointerUntil != -1) {
+            if (releaseDataPointerNext == releaseDataPointerUntil) {
+                releaseDataPointerNext = -1;
+                releaseDataPointerUntil = -1;
+                releaseDataPointer = 0;
+            } else {
+                for (int i = 0; i < numFrames && releaseDataPointerNext != releaseDataPointerUntil; i++) {
+                    float factor
+                    = (float)(releaseDataPointerNext > releaseDataPointerUntil ? releaseDataSize - releaseDataPointerNext + releaseDataPointerUntil : releaseDataPointerUntil - releaseDataPointerNext)
+                            / (releaseDataSize);
+                    begin[i] = releaseDataList[releaseDataPointerNext] * factor;
+
+                    releaseDataPointerNext = (releaseDataPointerNext + 1) % releaseDataSize;
+                }
+            }
+        }
+
+
         return DataCallbackResult::Continue;
     }
 
@@ -46,9 +65,14 @@ DataCallbackResult AudioEngine::onAudioReady(AudioStream *oboeStream, void *audi
     if (this->renderableAudios.empty()) {
         fillEmptyData(begin, numFrames);
     } else {
-        for(auto renderableAudio: renderableAudios) {
+        for (auto renderableAudio: renderableAudios) {
             renderableAudio->renderAudio(begin, numFrames);
         }
+        for (int i = 0; i < numFrames; i++) {
+            this->releaseDataList[releaseDataPointer] = begin[i];
+            releaseDataPointer = (releaseDataPointer + 1) % releaseDataSize;
+        }
+
     }
 
     return DataCallbackResult::Continue;
@@ -75,4 +99,7 @@ void AudioEngine::resume() {
 
 void AudioEngine::setIsPlaying(bool playing) {
     skipAllFrames = !playing;
+
+    releaseDataPointerUntil = (releaseDataPointer) % releaseDataSize;
+    releaseDataPointerNext = (releaseDataPointerUntil + 1) % releaseDataSize;
 }
