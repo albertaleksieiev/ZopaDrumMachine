@@ -35,7 +35,7 @@ namespace oscillator {
 
             for (int j = 0; j < kChannelCount; ++j) {
                 //if (targetData[(i * kChannelCount) + j] != 0) {
-                    targetData[(i * kChannelCount) + j] = static_cast<int16_t>(value);
+                targetData[(i * kChannelCount) + j] = static_cast<int16_t>(value);
                 //}
             }
 
@@ -48,7 +48,7 @@ namespace oscillator {
         }
     }
 
-    SimpleOscillator::SimpleOscillator() : phase(0.0), volume(0.7) {
+    SimpleOscillator::SimpleOscillator() : phase(M_PI), volume(0.7) {
         setFrequency(440); // 440hz aka note A4
     }
 

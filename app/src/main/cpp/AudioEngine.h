@@ -31,6 +31,13 @@ public:
     void setIsPlaying(bool i);
 
 private:
+    int release = 300; //ms
+    int releaseFramesCounter = -1;
+    int releaseFrames = static_cast<int>((float) release / 1000 * kSampleRateHz);
+
+    int attack = 50; //ms
+    int attackFramesCounter = -1;
+    int attackFrames = static_cast<int>((float) attack / 1000 * kSampleRateHz);
 
     AudioStream *audioStream = nullptr;
 

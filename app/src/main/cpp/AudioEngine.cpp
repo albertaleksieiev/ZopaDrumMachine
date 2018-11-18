@@ -39,6 +39,23 @@ DataCallbackResult AudioEngine::onAudioReady(AudioStream *oboeStream, void *audi
     auto begin = static_cast<int16_t *>(audioData);
     if (skipAllFrames) {
         fillEmptyData(begin, numFrames);
+
+        if (releaseFramesCounter >= releaseFrames) {
+            releaseFramesCounter = -1;
+        } else if (releaseFramesCounter >= 0) {
+            for (auto renderableAudio: renderableAudios) {
+                renderableAudio->renderAudio(begin, numFrames);
+            }
+
+            float factor = ((float) releaseFrames - releaseFramesCounter) / releaseFrames;
+            for (int i = 0; i < numFrames && releaseFramesCounter <= releaseFrames; ++i, ++releaseFramesCounter) {
+                for (int j = 0; j < kChannelCount; j++) {
+                    begin[i * kChannelCount + j] *= factor;
+                }
+            }
+        }
+
+
         return DataCallbackResult::Continue;
     }
 
@@ -46,8 +63,22 @@ DataCallbackResult AudioEngine::onAudioReady(AudioStream *oboeStream, void *audi
     if (this->renderableAudios.empty()) {
         fillEmptyData(begin, numFrames);
     } else {
-        for(auto renderableAudio: renderableAudios) {
+        for (auto renderableAudio: renderableAudios) {
             renderableAudio->renderAudio(begin, numFrames);
+        }
+
+
+        if (attackFramesCounter != -1) {
+            if (attackFramesCounter >= attackFrames) {
+                attackFramesCounter = -1;
+            } else {
+                float factor = ((float) attackFramesCounter) / attackFrames;
+                for (int i = 0; i < numFrames && attackFramesCounter <= attackFrames; ++i, ++attackFramesCounter) {
+                    for (int j = 0; j < kChannelCount; j++) {
+                        begin[i * kChannelCount + j] *= factor;
+                    }
+                }
+            }
         }
     }
 
@@ -74,5 +105,14 @@ void AudioEngine::resume() {
 }
 
 void AudioEngine::setIsPlaying(bool playing) {
+    if (this->skipAllFrames && playing) {
+        attackFramesCounter = 0;
+    }
+
+    if (!this->skipAllFrames && !playing) {
+        releaseFramesCounter = 0;
+    }
+
     skipAllFrames = !playing;
+
 }
