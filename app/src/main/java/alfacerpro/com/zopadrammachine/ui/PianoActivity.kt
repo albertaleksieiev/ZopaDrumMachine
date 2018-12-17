@@ -32,9 +32,9 @@ class PianoActivity : AppCompatActivity() {
                 viewModel.setIsPlaying(false)
             }
 
-            override fun onNoteTouchDown(note: Int) {
+            override fun onNoteTouchDown(notes: ArrayList<Int>) {
                 viewModel.setIsPlaying(true)
-                viewModel.setNote(note)
+                viewModel.setNotes(notes)
             }
         }
     }

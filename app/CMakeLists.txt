@@ -24,6 +24,7 @@ add_library( # Sets the name of the library.
         src/main/cpp/bridge/piano.cpp
         src/main/cpp/AudioEngine.cpp
         src/main/cpp/instruments/SimpleOscillator.cpp
+        src/main/cpp/instruments/MultiFrequencyOscillator.cpp
         src/main/cpp/instruments/DrumMachine.cpp
         src/main/cpp/instruments/Piano.cpp
         src/main/cpp/google/SoundRecording.cpp

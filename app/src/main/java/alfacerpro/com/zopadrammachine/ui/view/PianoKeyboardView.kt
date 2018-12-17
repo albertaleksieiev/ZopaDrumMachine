@@ -10,9 +10,10 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 
+
 class PianoKeyboardView : View {
     interface OnTouchEvents {
-        fun onNoteTouchDown(note: Int)
+        fun onNoteTouchDown(notes: ArrayList<Int>)
         fun onNoteTouchUp()
     }
 
@@ -26,6 +27,11 @@ class PianoKeyboardView : View {
     val blackIds = intArrayOf(1, 3, 6, 8, 10)
     val noteCount = 12
     val noteToRect = HashMap<Int, Rect>()
+
+    val touchIntexToNote = HashMap<Int, Int>()
+    private var notes: ArrayList<Int> = ArrayList()
+        get() = ArrayList(touchIntexToNote.values.toList())
+
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -64,31 +70,59 @@ class PianoKeyboardView : View {
         }
     }
 
+    private fun getNoteFromTouchPointer(x: Int, y: Int): Int? {
+        // Get the pointer's current position
+        val ids = ArrayList<Int>()
+        for ((note, rect) in noteToRect) {
+            if (rect.contains(x, y)) {
+                ids.add(note)
+            }
+        }
+
+        // to prevent ambiguous between black and white buttons
+        val blackButton = ids.filter { blackIds.contains(it % noteCount) }
+        val whiteButton = ids.filter { whiteIds.contains(it % noteCount) }
+
+        if (!blackButton.isEmpty()) { // black button have rank of 1
+            return blackButton.first()
+        } else if (!whiteButton.isEmpty()) {
+            return whiteButton.first()
+        }
+
+        return null
+    }
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event == null) {
             return super.onTouchEvent(event)
         }
 
-        if (event.action == MotionEvent.ACTION_DOWN) {
-            val ids = ArrayList<Int>()
-            for ((note, rect) in noteToRect) {
+        if (event.actionMasked == MotionEvent.ACTION_POINTER_DOWN ||
+            event.actionMasked == MotionEvent.ACTION_DOWN) {
+            val index = event.actionIndex
 
-
-                if (rect.contains(event.x.toInt(), event.y.toInt())) {
-                    ids.add(note)
-                }
+            val note = getNoteFromTouchPointer(event.getX(index).toInt(), event.getY(index).toInt())
+            if (note != null) {
+                touchIntexToNote[index] = note
             }
+            onTouchEvents?.onNoteTouchDown(notes)
 
-            // to prevent ambiguous between black and white buttons
-            val blackButton = ids.filter { blackIds.contains(it % noteCount) }
-            val whiteButton = ids.filter { whiteIds.contains(it % noteCount) }
-
-            if (!blackButton.isEmpty()) { // black button have rank of 1
-                onTouchEvents?.onNoteTouchDown(blackButton.first())
-            } else if (!whiteButton.isEmpty()) {
-                onTouchEvents?.onNoteTouchDown(whiteButton.first())
-            }
-        } else if (event.action == MotionEvent.ACTION_UP) {
+        } else if (event.actionMasked == MotionEvent.ACTION_MOVE) {
+            // Bad perfomance
+//            val index = event.actionIndex
+//            getNoteFromTouchPointer(event.getX(index).toInt(), event.getY(index).toInt())
+//                ?.let {
+//                    val prevNote = touchIntexToNote.get(it)
+//                    if (prevNote != null && prevNote != it) {
+//                        touchIntexToNote[index] = prevNote
+//                    }
+//                    onTouchEvents?.onNoteTouchDown(notes)
+//                }
+        } else if (event.actionMasked == MotionEvent.ACTION_POINTER_UP) {
+            touchIntexToNote.remove(event.actionIndex)
+            onTouchEvents?.onNoteTouchDown(notes)
+        } else if (event.actionMasked == MotionEvent.ACTION_UP) {
+            touchIntexToNote.clear()
             onTouchEvents?.onNoteTouchUp()
         }
 

@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             button.isChecked = false
 
             ll.addView(button)
-            button.setOnCheckedChangeListener { buttonView, isChecked ->
+            button.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     viewModel.machine?.addPattern(sound.id, i)
                 } else {

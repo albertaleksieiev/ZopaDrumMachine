@@ -7,7 +7,7 @@ class Piano {
 
     private external fun init() : Long
 
-    public external fun setNote(note: Int)
+    public external fun setNotes(notes: IntArray)
 
 
     init {

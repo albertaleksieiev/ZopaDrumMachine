@@ -8,15 +8,15 @@
 #include "../google/RenderableAudio.h"
 #include "../const.h"
 #include <functional>
-#include "./SimpleOscillator.h"
+#include "./MultiFrequencyOscillator.h"
 #include <cmath>
 
 class Piano : public RenderableAudio {
 public:
-    void setNote(int note); // [1..88]
+    void setNotes(std::vector<int> notes); // [1..88]
 
 private:
-    oscillator::SimpleOscillator simpleOscillator;
+    oscillator::MultiFrequencyOscillator audioOscillator;
     void renderAudio(int16_t *targetData, int32_t numFrames) override;
 
 };

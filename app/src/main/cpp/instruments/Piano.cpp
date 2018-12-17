@@ -5,9 +5,14 @@
 #include "Piano.h"
 
 void Piano::renderAudio(int16_t *targetData, int32_t numFrames) {
-    simpleOscillator.renderAudio(targetData, numFrames);
+    audioOscillator.renderAudio(targetData, numFrames);
 }
 
-void Piano::setNote(int note) {
-    simpleOscillator.setFrequency(pow(2, (note - 49.0)/12.) * 440.0);
+void Piano::setNotes(std::vector<int> notes) {
+    std::vector<double > freqs;
+    for (auto note: notes) {
+        freqs.emplace_back(pow(2, (note - 49.0)/12.) * 440.0);
+    }
+
+    audioOscillator.setFrequencies(freqs);
 }

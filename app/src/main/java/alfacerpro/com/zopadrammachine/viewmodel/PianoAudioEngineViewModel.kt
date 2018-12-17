@@ -21,7 +21,7 @@ class PianoAudioEngineViewModel: AudioEngineViewModelBase() {
         super.onStop()
     }
 
-    fun setNote(note: Int) {
-        piano?.setNote(note)
+    fun setNotes(notes: ArrayList<Int>) {
+        piano?.setNotes(notes.toIntArray())
     }
 }

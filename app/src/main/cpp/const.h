@@ -12,6 +12,7 @@
 #include <thread>
 #include <cmath>
 #include <jni.h>
+#include <vector>
 
 constexpr int kSampleRateHz = 48000; //
 constexpr int kBufferSizeInBursts = 2; // Use 2 bursts as the buffer size (double buffer)
