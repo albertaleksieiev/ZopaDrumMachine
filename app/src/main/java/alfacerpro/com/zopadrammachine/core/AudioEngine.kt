@@ -51,4 +51,5 @@ class AudioEngine {
     external fun addInstrument(nativePointer: Long)
     external fun clearInstruments()
     external fun setIsPlaying(playing: Boolean)
+    external fun setIsAttackReleaseEnabled(enabled: Boolean)
 }

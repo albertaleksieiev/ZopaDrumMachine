@@ -30,6 +30,8 @@ public:
 
     void setIsPlaying(bool i);
 
+    void setIsAttackReleaseEnabled(jboolean enabled);
+
 private:
     int release = 300; //ms
     int releaseFramesCounter = -1;
@@ -43,6 +45,7 @@ private:
 
     void fillEmptyData(int16_t *audioData, int32_t numFrames);
 
+    bool attackAndReleaseEnabled = true;
     bool skipAllFrames = false;//if false we will skip all frames
 };
 

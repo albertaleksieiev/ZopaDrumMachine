@@ -22,11 +22,14 @@ add_library( # Sets the name of the library.
         src/main/cpp/bridge/oscillator.cpp
         src/main/cpp/bridge/drum-machine.cpp
         src/main/cpp/bridge/piano.cpp
+        src/main/cpp/bridge/media-player.cpp
+        src/main/cpp/utils/kiss_fft.c
         src/main/cpp/AudioEngine.cpp
         src/main/cpp/instruments/SimpleOscillator.cpp
         src/main/cpp/instruments/MultiFrequencyOscillator.cpp
         src/main/cpp/instruments/DrumMachine.cpp
         src/main/cpp/instruments/Piano.cpp
+        src/main/cpp/instruments/MediaPlayer.cpp
         src/main/cpp/google/SoundRecording.cpp
         src/main/cpp/effects/SimpleDelay.cpp
         src/main/cpp/google/Mixer.cpp)

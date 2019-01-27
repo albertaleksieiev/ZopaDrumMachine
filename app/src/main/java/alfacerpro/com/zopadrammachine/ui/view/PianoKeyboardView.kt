@@ -60,9 +60,7 @@ class PianoKeyboardView : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        if (canvas == null) {
-            return
-        }
+        val canvas = canvas ?: return
 
         var x = 0
         for (octave in 4..5) {

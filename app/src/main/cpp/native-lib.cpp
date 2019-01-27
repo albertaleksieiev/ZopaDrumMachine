@@ -52,9 +52,15 @@ Java_alfacerpro_com_zopadrammachine_core_AudioEngine_addInstrument(JNIEnv *env,
 
 JNIEXPORT void JNICALL
 Java_alfacerpro_com_zopadrammachine_core_AudioEngine_clearInstruments(JNIEnv *env,
-                                                          jobject thiz) {
+                                                                      jobject thiz) {
     engine.renderableAudios.clear();
 }
+
+JNIEXPORT void JNICALL
+Java_alfacerpro_com_zopadrammachine_core_AudioEngine_setIsAttackReleaseEnabled(JNIEnv *env, jobject thiz, jboolean enabled) {
+    engine.setIsAttackReleaseEnabled(enabled);
+}
+
 
 
 }

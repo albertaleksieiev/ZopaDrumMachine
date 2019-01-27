@@ -42,7 +42,7 @@ DataCallbackResult AudioEngine::onAudioReady(AudioStream *oboeStream, void *audi
 
         if (releaseFramesCounter >= releaseFrames) {
             releaseFramesCounter = -1;
-        } else if (releaseFramesCounter >= 0) {
+        } else if (releaseFramesCounter >= 0 && attackAndReleaseEnabled) {
             for (auto renderableAudio: renderableAudios) {
                 renderableAudio->renderAudio(begin, numFrames);
             }
@@ -68,7 +68,7 @@ DataCallbackResult AudioEngine::onAudioReady(AudioStream *oboeStream, void *audi
         }
 
 
-        if (attackFramesCounter != -1) {
+        if (attackFramesCounter != -1 && attackAndReleaseEnabled) {
             if (attackFramesCounter >= attackFrames) {
                 attackFramesCounter = -1;
             } else {
@@ -115,4 +115,8 @@ void AudioEngine::setIsPlaying(bool playing) {
 
     skipAllFrames = !playing;
 
+}
+
+void AudioEngine::setIsAttackReleaseEnabled(jboolean enabled) {
+    this->attackAndReleaseEnabled = enabled;
 }

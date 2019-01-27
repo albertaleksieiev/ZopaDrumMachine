@@ -6,6 +6,10 @@ This a simple [sequencer](https://en.wikipedia.org/wiki/Music_sequencer) for And
 Also you can find here a simple implementation of Piano generated with `Sin` wave func.
 ![piano](https://i.imgur.com/5PexIr4.png)
 
+# Zopa MediaPlayer with waveform playback controller
+A simple media player with a visualized waveform. Also, you can easily change current playback progress. Playback progress has a shape of the current waveform.
+![mediaplayer](https://i.imgur.com/ccZwHod.png)
+
 #### Features
 - Sequencer
     - 16 step sequencer

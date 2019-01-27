@@ -48,12 +48,15 @@ public:
 
     static SoundRecording *loadFromAssets(AAssetManager *assetManager, const char *filename);
 
-private:
-    float calculatePivotFactor();
+    // TODO add accesors
 
     int32_t mReadFrameIndex = 0;
     const int16_t *mData = nullptr;
     int32_t mTotalFrames = 0;
+private:
+    float calculatePivotFactor();
+
+
     std::atomic<bool> mIsPlaying{false};
     std::atomic<bool> mIsLooping{false};
 
