@@ -34,6 +34,34 @@ Java_alfacerpro_com_zopadrammachine_core_MediaPlayer_getProgress(JNIEnv *env, jo
 
 
 JNIEXPORT jfloatArray JNICALL
+Java_alfacerpro_com_zopadrammachine_core_MediaPlayer_getAnalyzedFrequencies(JNIEnv *env, jobject instance) {
+    auto mediaPlayer = getNativeObject<MediaPlayer>(env, instance);
+
+    std::vector<float> volume = mediaPlayer->getAnalyzedFrequencies();
+// Fill it
+    const auto arraySize = volume.size();
+    auto cArray = new float[arraySize];
+    for (int i = 0; i < volume.size(); ++i) {
+        cArray[i] = volume[i];
+    }
+
+// Create JNI instance
+    jfloatArray result;
+    result = env->NewFloatArray(static_cast<jsize>(arraySize));
+
+    if (result == nullptr) {
+        delete[] cArray;
+        return nullptr; /* out of memory error thrown */
+    }
+
+// Convert and delete
+    env->SetFloatArrayRegion(result, 0, (jsize) arraySize, cArray);
+    delete[] cArray;
+
+    return result;
+}
+
+JNIEXPORT jfloatArray JNICALL
 Java_alfacerpro_com_zopadrammachine_core_MediaPlayer_getWaveform(JNIEnv *env, jobject instance) {
     auto mediaPlayer = getNativeObject<MediaPlayer>(env, instance);
 

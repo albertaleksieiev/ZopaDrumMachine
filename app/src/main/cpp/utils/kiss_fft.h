@@ -10,6 +10,10 @@
 extern "C" {
 #endif
 
+
+#define FIXED_POINT 16
+
+
 /*
  ATTENTION!
  If you would like a :

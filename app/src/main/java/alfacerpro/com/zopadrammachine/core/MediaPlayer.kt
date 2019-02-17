@@ -6,6 +6,7 @@ class MediaPlayer(assetManager: AssetManager) {
     val nativePointer: Long
 
     external fun getWaveform(): FloatArray?
+    external fun getAnalyzedFrequencies(): FloatArray?
     private external fun init(assetManager: AssetManager): Long
     external fun setProgress(progress: Float)
     external fun getProgress(): Float

@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 val Int.px: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
-class MainActivity : AppCompatActivity() {
+class DrumMachineActivity : AppCompatActivity() {
     private val viewModel: DrumMachineAudioEngineViewModel by lazy {
         ViewModelProviders.of(this).get(DrumMachineAudioEngineViewModel::class.java)
     }

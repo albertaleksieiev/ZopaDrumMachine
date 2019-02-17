@@ -2,6 +2,7 @@
 // Created by Albert on 11/13/18.
 //
 
+#include <instruments/MediaPlayer.h>
 #include "AudioEngine.h"
 
 void AudioEngine::start() {

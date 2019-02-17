@@ -4,7 +4,7 @@ import alfacerpro.com.zopadrammachine.R
 import alfacerpro.com.zopadrammachine.Utils
 import alfacerpro.com.zopadrammachine.core.AudioEngine
 import alfacerpro.com.zopadrammachine.core.MediaPlayer
-import alfacerpro.com.zopadrammachine.ui.view.WaveformTimeControllerView
+import alfacerpro.com.zopadrammachine.ui.view.WaveformPlaybackView
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
@@ -24,13 +24,23 @@ class MediaPlayerActivity : AppCompatActivity() {
         backgroundThread = thread {
             while (!Thread.interrupted()) {
                 try {
-                    Thread.sleep(350)
+                    Thread.sleep(300)
                 } catch (e: InterruptedException) {
                 }
 
                 mediaPlayer?.getProgress()?.let {
                     runOnUiThread { waveformController.progress = it }
                 }
+            }
+        }
+        thread {
+            Thread.currentThread().priority = Thread.MAX_PRIORITY
+            while (!Thread.interrupted()) {
+                mediaPlayer?.getAnalyzedFrequencies()?.let { freqs ->
+                    frequencyView.frequencies = ArrayList(freqs.toList())
+                }
+
+                Thread.sleep(3)
             }
         }
     }
@@ -50,7 +60,7 @@ class MediaPlayerActivity : AppCompatActivity() {
         }
 
 
-        waveformController.progressChangeListener = object : WaveformTimeControllerView.OnProgressChangeListener {
+        waveformController.progressChangeListener = object : WaveformPlaybackView.OnProgressChangeListener {
             override fun progressChanged(progress: Float) {
                 mediaPlayer?.setProgress(progress)
                 audioEngine?.setIsPlaying(true)
@@ -68,6 +78,7 @@ class MediaPlayerActivity : AppCompatActivity() {
 
         mediaPlayer?.getWaveform()?.let { waveform ->
             waveformController.points = ArrayList(waveform.toList())
+            frequencyView.frequencies = ArrayList(waveform.toList())
         }
     }
 

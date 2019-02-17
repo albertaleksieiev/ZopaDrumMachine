@@ -5,9 +5,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.MediaPlayerActivity">
-    <alfacerpro.com.zopadrammachine.ui.view.WaveformTimeControllerView
+        tools:context=".ui.MediaPlayerActivity"
+        android:padding="15dp">
+    <alfacerpro.com.zopadrammachine.ui.view.FrequencyView android:layout_width="match_parent"
+                                                          android:layout_height="400dp"
+                                                          android:id="@+id/frequencyView"
+                                                          android:layout_marginBottom="35dp"
+                                                          android:layout_gravity="end"/>
+    <alfacerpro.com.zopadrammachine.ui.view.WaveformPlaybackView
             android:id="@+id/waveformController"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="160dp"
+            android:layout_gravity="end"/>
 </LinearLayout>

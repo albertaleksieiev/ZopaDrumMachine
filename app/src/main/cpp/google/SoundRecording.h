@@ -53,13 +53,13 @@ public:
     int32_t mReadFrameIndex = 0;
     const int16_t *mData = nullptr;
     int32_t mTotalFrames = 0;
+    bool enableFadeout = true;
 private:
     float calculatePivotFactor();
 
 
     std::atomic<bool> mIsPlaying{false};
     std::atomic<bool> mIsLooping{false};
-
     float pivotPerc = 0.03; // 0..<..3%..>..100%
     SimpleDelay simpleDelay = SimpleDelay(0.5f, 0.7f);
 };

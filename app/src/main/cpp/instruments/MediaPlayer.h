@@ -7,14 +7,16 @@
 
 #include <oboe/Oboe.h>
 #include <vector>
+#include <cmath>
 #include "../google/SoundRecording.h"
 #include "../google/Mixer.h"
 #include "../effects/SimpleDelay.h"
 #include "../const.h"
-#include "../utils/kiss_fft.h"
+#include "../utils/kiss_fftr.h"
 #include "../../../../../../../android/oboe/src/common/OboeDebug.h"
 
-const int fftN = 4096 * 4;
+#define NUM_FFT 2048
+#define NUM_FREQ (((NUM_FFT)/2)+1)
 
 class MediaPlayer : public RenderableAudio {
 public:
@@ -27,11 +29,12 @@ public:
     float getProgress();
 
 
-private:
+    std::vector<float> getAnalyzedFrequencies();
     SoundRecording *audioTrack = nullptr;
+private:
 
-    kiss_fft_cpx in[fftN], out[fftN];
-    kiss_fft_cfg cfg = kiss_fft_alloc(fftN, 0/*is_inverse_fft*/, nullptr, nullptr);
+    std::vector<float> getAnalyzedFrequencies(int readIndex, int maxFrames, int binsCount);
+    kiss_fftr_cfg fft = kiss_fftr_alloc(NUM_FFT, 0, 0, 0);
 };
 
 

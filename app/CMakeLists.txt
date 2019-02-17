@@ -24,6 +24,7 @@ add_library( # Sets the name of the library.
         src/main/cpp/bridge/piano.cpp
         src/main/cpp/bridge/media-player.cpp
         src/main/cpp/utils/kiss_fft.c
+        src/main/cpp/utils/kiss_fftr.c
         src/main/cpp/AudioEngine.cpp
         src/main/cpp/instruments/SimpleOscillator.cpp
         src/main/cpp/instruments/MultiFrequencyOscillator.cpp

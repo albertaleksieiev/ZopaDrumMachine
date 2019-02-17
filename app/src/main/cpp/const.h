@@ -15,7 +15,7 @@
 #include <vector>
 
 constexpr int kSampleRateHz = 48000; //
-constexpr int kBufferSizeInBursts = 2; // Use 2 bursts as the buffer size (double buffer)
+constexpr int kBufferSizeInBursts = 1; // Use 2 bursts as the buffer size (double buffer)
 constexpr int kSteps = 16; // Must be multiplied of 2
 constexpr int BPM = 155; // TODO fix bpm
 constexpr int16_t kMaxSoundValue = 32767;

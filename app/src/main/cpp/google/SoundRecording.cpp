@@ -26,7 +26,7 @@ void SoundRecording::renderAudio(int16_t *targetData, int32_t numFrames) {
             mIsPlaying = false;
         }
 
-        auto pivotFactor = calculatePivotFactor();
+        auto pivotFactor = enableFadeout ? calculatePivotFactor() : 1.0f;
 
 //        if(mReadFrameIndex % 4 == 0) {
 //            LOGD("factor = %d, item = %ld of %ld", factor, mReadFrameIndex, mTotalFrames);

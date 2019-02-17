@@ -6,36 +6,24 @@
 
 
 MediaPlayer::MediaPlayer(AAssetManager *mAssetManager) {
-    audioTrack = SoundRecording::loadFromAssets(mAssetManager, "Media - Track.wav");
+    audioTrack = SoundRecording::loadFromAssets(mAssetManager, "Media - Track_1.wav");
+    audioTrack->enableFadeout = false;
     audioTrack->setPlaying(true);
+    audioTrack->setLooping(true);
 }
 
 std::vector<float> MediaPlayer::getWaveform() {
-    int totalFrames = audioTrack->mTotalFrames;
-    int stepCount = totalFrames / fftN;
-
     auto res = std::vector<float>();
+    int binsCounts = 128;
+    for (int i = 0; i < binsCounts; i++) {
+        auto v = ((float)i / binsCounts) * this->audioTrack->mTotalFrames;
 
-
-    for (int step = 0; step < stepCount; step++) {
-
-        int j = 0;
-        for (int curFrame = step * fftN; curFrame < fftN * (step + 1)
-                                         && curFrame < audioTrack->mTotalFrames
-                                         && j < fftN; curFrame++) {
-            auto v = audioTrack->mData[curFrame];
-            in[j].r = v / 32768.0f;
-            in[j].i = 0;
+        auto freqs = getAnalyzedFrequencies(v, 4, 256);
+        double sum = 0;
+        for (auto f: freqs) {
+            sum += f;
         }
-
-        kiss_fft(cfg, in, out);
-
-        float sum = 0;
-        for (int i = 0; i < fftN; i++) {
-            sum += sqrt(pow(out[i].r, 2) + pow(out[i].i, 2));
-        }
-
-        res.push_back(sum / fftN);
+        res.push_back(sum / freqs.size());
     }
     return res;
 }
@@ -54,4 +42,56 @@ float MediaPlayer::getProgress() {
     }
 
     return (float) audioTrack->mReadFrameIndex / audioTrack->mTotalFrames;
+}
+
+std::vector<float> MediaPlayer::getAnalyzedFrequencies() {
+    return getAnalyzedFrequencies(this->audioTrack->mReadFrameIndex, 4, 128);
+}
+
+std::vector<float> MediaPlayer::getAnalyzedFrequencies(int readIndex, int maxFrames, int binsCount) {
+    int i = readIndex;
+
+    auto res = std::vector<float>(NUM_FREQ, 0);
+
+    int STEPS = std::min(kSampleRateHz / NUM_FFT, maxFrames);
+    if (i < 0) i = 0;
+
+    for (int k = 0; k < STEPS; k++) {
+        int16_t sampv[NUM_FFT];
+        kiss_fft_cpx freqv[NUM_FREQ];
+
+        int end = i + NUM_FFT;
+        for (int j = 0; i < end && i < audioTrack->mTotalFrames && j < NUM_FFT; i++, j++) {
+            sampv[j] = audioTrack->mData[i];
+        }
+
+        kiss_fftr(fft, sampv, freqv);
+
+        for (int j = 0; j < res.size(); j++) {
+            kiss_fft_cpx cpx = freqv[j];
+            auto s = sqrt(cpx.r * cpx.r + cpx.i * cpx.i);
+            res[j] += s;
+        }
+    }
+
+    for (int j = 0; j < res.size(); j++) {
+        res[j] /= STEPS * 40;
+        res[j] = std::min(res[j], 1.f);
+    }
+
+    auto final_res = std::vector<float>(binsCount, 0);
+    auto step = res.size() / final_res.size();
+    for (int i = 0; i < final_res.size(); i++) {
+        int cnt = 0;
+        for (auto j = i * step; j < (i + 1) * step && j < res.size(); j++) {
+            final_res[i] += res[j];
+            cnt++;
+        }
+
+        if (cnt > 0) {
+            final_res[i] /= cnt;
+        }
+    }
+
+    return final_res;
 }

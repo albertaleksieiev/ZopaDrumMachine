@@ -10,6 +10,14 @@ Also you can find here a simple implementation of Piano generated with `Sin` wav
 A simple media player with a visualized waveform. Also, you can easily change current playback progress. Playback progress has a shape of the current waveform.
 ![mediaplayer](https://i.imgur.com/ccZwHod.png)
 
+
+# Zopa MediaPlayer with waveform visualization
+`FrequencyView.kt` custom view with visualized frequencies specter for current playback progress. Each bin corresponds to some range of frequencies. The most left one is the lowest freqs, the rightest one is the highest frequency, and middle frequencies in the middle of the view.
+
+[![Wavefor](http://img.youtube.com/vi/2vuc9vSd9fw/0.jpg)](http://www.youtube.com/watch?v=2vuc9vSd9fw "Wavefor")
+
+*Click on the image to play youtube video*
+
 #### Features
 - Sequencer
     - 16 step sequencer
