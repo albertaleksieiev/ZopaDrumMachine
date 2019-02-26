@@ -10,5 +10,7 @@ class App: Application() {
         super.onCreate()
         Kotpref.init(applicationContext)
         Kotpref.gson = Gson()
+
+        Utils.loadLibrary()
     }
 }

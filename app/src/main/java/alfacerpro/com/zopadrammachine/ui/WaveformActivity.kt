@@ -39,8 +39,6 @@ class WaveformActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_waveform)
 
-        Utils.loadLibrary()
-
         audioEngine = AudioEngine()
         mediaPlayer = MediaPlayer(assets)
         audioEngine?.setIsAttackReleaseEnabled(false)

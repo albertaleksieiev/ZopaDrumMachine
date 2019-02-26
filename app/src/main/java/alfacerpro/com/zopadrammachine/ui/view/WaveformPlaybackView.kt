@@ -63,20 +63,13 @@ class WaveformPlaybackView : View {
         paintDone.strokeCap = Paint.Cap.ROUND
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (event == null) {
-            return super.onTouchEvent(event)
-        }
-
+    override fun onTouchEvent(event: MotionEvent): Boolean {
         progressChangeListener?.progressChanged(event.x / width)
-
         return true
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        val canvas = canvas ?: return
 
         val midX = height / 2
 

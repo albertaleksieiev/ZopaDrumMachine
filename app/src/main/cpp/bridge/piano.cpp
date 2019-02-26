@@ -32,6 +32,4 @@ Java_alfacerpro_com_zopadrammachine_core_Piano_setNotes(JNIEnv *env, jobject ins
     piano->setNotes(notes);
 }
 
-
-
 }

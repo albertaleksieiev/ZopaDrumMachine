@@ -49,8 +49,6 @@ class MediaPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media_player)
 
-        Utils.loadLibrary()
-
         audioEngine = AudioEngine()
         mediaPlayer = MediaPlayer(assets)
         audioEngine?.setIsAttackReleaseEnabled(false)

@@ -19,7 +19,6 @@ class PianoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_piano)
-        Utils.loadLibrary()
 
         viewModel.state.observe(this, Observer { state ->
             Log.d("PianoActivity", "State changed to $state")

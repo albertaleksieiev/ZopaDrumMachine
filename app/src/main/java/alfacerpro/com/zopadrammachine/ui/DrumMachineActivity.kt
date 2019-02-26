@@ -27,8 +27,6 @@ class DrumMachineActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Utils.loadLibrary()
-
         initTickersView()
 
         initPatternView(DrumMachine.Sound.KICK)

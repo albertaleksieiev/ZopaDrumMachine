@@ -22,7 +22,6 @@ class DrumMachineAudioEngineViewModel : AudioEngineViewModelBase() {
 
         audioEngine.clearInstruments()
         audioEngine.addInstrument(machine!!.nativePointer)
-        //audioEngine.addInstrument(SimpleOscillator().nativePointer)
         audioEngine.start()
         loadState()
         startBackgroundThread()

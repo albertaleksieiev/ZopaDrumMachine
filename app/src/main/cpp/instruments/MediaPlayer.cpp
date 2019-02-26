@@ -14,11 +14,11 @@ MediaPlayer::MediaPlayer(AAssetManager *mAssetManager) {
 
 std::vector<float> MediaPlayer::getWaveform() {
     auto res = std::vector<float>();
-    int binsCounts = 128;
+    int binsCounts = 256;
     for (int i = 0; i < binsCounts; i++) {
-        auto v = ((float)i / binsCounts) * this->audioTrack->mTotalFrames;
+        auto v = ((float) i / binsCounts) * this->audioTrack->mTotalFrames;
 
-        auto freqs = getAnalyzedFrequencies(v, 4, 256);
+        auto freqs = getAnalyzedFrequencies(v, 8, 256);
         double sum = 0;
         for (auto f: freqs) {
             sum += f;
@@ -53,10 +53,10 @@ std::vector<float> MediaPlayer::getAnalyzedFrequencies(int readIndex, int maxFra
 
     auto res = std::vector<float>(NUM_FREQ, 0);
 
-    int STEPS = std::min(kSampleRateHz / NUM_FFT, maxFrames);
+    int steps = std::min(kSampleRateHz / NUM_FFT, maxFrames);
     if (i < 0) i = 0;
 
-    for (int k = 0; k < STEPS; k++) {
+    for (int k = 0; k < steps; k++) {
         int16_t sampv[NUM_FFT];
         kiss_fft_cpx freqv[NUM_FREQ];
 
@@ -74,9 +74,9 @@ std::vector<float> MediaPlayer::getAnalyzedFrequencies(int readIndex, int maxFra
         }
     }
 
-    for (int j = 0; j < res.size(); j++) {
-        res[j] /= STEPS * 40;
-        res[j] = std::min(res[j], 1.f);
+    for (float &re : res) {
+        re /= steps * 40;
+        re = std::min(re, 1.f);
     }
 
     auto final_res = std::vector<float>(binsCount, 0);

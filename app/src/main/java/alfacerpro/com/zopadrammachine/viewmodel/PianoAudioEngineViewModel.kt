@@ -14,6 +14,7 @@ class PianoAudioEngineViewModel: AudioEngineViewModelBase() {
         audioEngine.addInstrument(piano!!.nativePointer)
 
         audioEngine.setIsPlaying(false)
+        audioEngine.setIsAttackReleaseEnabled(true)
         audioEngine.start()
     }
 

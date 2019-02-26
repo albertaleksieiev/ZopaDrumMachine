@@ -8,6 +8,7 @@
 #include <oboe/Oboe.h>
 #include <vector>
 #include <cmath>
+#include <algorithm>
 #include "../google/SoundRecording.h"
 #include "../google/Mixer.h"
 #include "../effects/SimpleDelay.h"

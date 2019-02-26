@@ -21,7 +21,6 @@ Java_alfacerpro_com_zopadrammachine_core_DrumMachine_currentStep(JNIEnv *env,
     return 0;
 }
 
-
 JNIEXPORT void JNICALL
 Java_alfacerpro_com_zopadrammachine_core_DrumMachine_addPattern(
         JNIEnv *env,
