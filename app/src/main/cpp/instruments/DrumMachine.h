@@ -11,7 +11,7 @@
 #include "../google/Mixer.h"
 #include "../effects/SimpleDelay.h"
 #include "../const.h"
-#include "../../../../../../../android/oboe/src/common/OboeDebug.h"
+#include "../../../../../../android/oboe/src/common/OboeDebug.h"
 
 constexpr int kBeatMultiplier = static_cast<const int>((float) kSampleRateHz / (BPM / 60.0));
 constexpr int kMaxWindowHZ = kBeatMultiplier * 16;

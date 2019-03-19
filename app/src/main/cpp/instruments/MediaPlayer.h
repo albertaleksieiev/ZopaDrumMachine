@@ -14,7 +14,7 @@
 #include "../effects/SimpleDelay.h"
 #include "../const.h"
 #include "../utils/kiss_fftr.h"
-#include "../../../../../../../android/oboe/src/common/OboeDebug.h"
+#include "../../../../../android/oboe/src/common/OboeDebug.h"
 
 #define NUM_FFT 2048
 #define NUM_FREQ (((NUM_FFT)/2)+1)
